@@ -6,6 +6,15 @@ import ShareBottom from './share-bottom';
 import Divider from '@material-ui/core/Divider';
 import cookie from 'react-cookie';
 
+const ADD_POST = gql`
+  mutation addTodo($type: String!) {
+    addTodo(type: $type) {
+      id
+      type
+    }
+  }
+`;
+
 const styles = theme => ({
     root: {
         width: '100%',
