@@ -4,14 +4,29 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router";
 import indexRoutes from "routes/index.jsx";
 import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http'
+import { HttpLink, createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from 'react-apollo'
+import { ApolloLink } from 'apollo-link';
+import { getAuthCookie } from './client/utils/cookies';
 
 import "assets/scss/material-kit-react.css";
 
+
+const httpLink = createHttpLink({ uri: 'http://localhost:2017/graphql' });
+const middlewareLink = new ApolloLink((operation, forward) => {
+  operation.setContext({
+    headers: {
+      authorization: 'Bearer '+getAuthCookie() || null
+    }
+  });
+  return forward(operation)
+})
+
+const link = middlewareLink.concat(httpLink);
+
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:2017/graphql' }),
+  link,
   cache: new InMemoryCache()
 })
 
