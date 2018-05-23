@@ -50,6 +50,8 @@ class FirstRow extends Component {
         this.textarea.addEventListener('input', () => {
             this.setState({
                 textAreaHeight: this.textarea.scrollHeight
+            }, () => {
+                this.props.setTextAreaValue(this.textarea.value);
             });
         })
         this.textarea.addEventListener('focus', () => {
@@ -58,6 +60,10 @@ class FirstRow extends Component {
         this.textarea.addEventListener('blur', () => {
             this.props.setFocus(false);
         })
+    }
+
+    getContent(){
+        return this.textarea.value;
     }
 
     render() {

@@ -28,7 +28,7 @@ class UButton extends Component {
         const { classes } = this.props;
 
         return (
-            <Button variant="raised"  className={classes.button}>
+            <Button variant="raised" className={classes.button} onClick={this.props.onClick !== undefined ? () => this.props.onClick() : () => { }}>
                 {this.props.label}
             </Button>
         )

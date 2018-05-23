@@ -8,6 +8,10 @@ import PinIcon from '@material-ui/icons/PinDrop';
 import IconButton from "components/CustomButtons/IconButton.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import UButton from '../components/ubutton';
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+import { graphql } from 'react-apollo';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
     root: {
@@ -75,6 +79,15 @@ const styles = theme => ({
     }
 });
 
+const CREATE_POST = gql`
+        mutation createPostMutation( $content: String!, $username: String!){
+            createPost(content: $content, sent_by: $username) {
+              content
+              sent_by
+            }
+        }
+`;
+
 class ShareBottom extends Component {
     constructor(props) {
         super(props);
@@ -87,8 +100,18 @@ class ShareBottom extends Component {
             isCommentOn: false,
             isShareOn: false,
             heartCount: 31,
-            expanded: false
+            expanded: false,
+            textAreaValue: this.props.textAreaValue || undefined
         };
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.textAreaValue !== nextProps.textAreaValue){
+            this.setState({
+                ...this.state,
+                textAreaValue: this.props.textAreaValue
+            })
+        }
     }
 
     onHeartClick() {
@@ -135,9 +158,46 @@ class ShareBottom extends Component {
                         <PinIcon className={this.state.isShareOn ? classes.iconOn : classes.iconOff} />
                     </IconButton>
                 </div>
-                <div className={classes.sendContainer}>
-                    <UButton label='publish' />
-                </div>
+                <Mutation
+                    mutation={CREATE_POST}
+                >
+                    {(createPost, { data, loading, error }) => {
+                        if (loading) return (
+                            <div className={classes.sendContainer}>
+                                <CircularProgress size={24} style={{
+                                    color: '#ff9800'
+                                }} />
+                            </div>
+                        );
+                        if (error) {
+                            console.log('error', error);
+                            <div className={classes.sendContainer}>
+                                <UButton label='publish' onClick={() => createPost({
+                                    variables: {
+                                        content: 'hello from post',
+                                        username: 'nello.saulino@gmail.com'
+                                    }
+                                })} />
+                            </div>
+                        }
+                        return (
+                            <div className={classes.sendContainer}>
+                                <UButton label='publish' onClick={
+                                    () => {
+                                        if (this.state.textAreaValue === undefined) return;
+                                        createPost({
+                                            variables: {
+                                                content: this.state.textAreaValue,
+                                                username: 'nello.saulino@gmail.com'
+                                            }
+                                        })
+                                    }
+                                } />
+                            </div>
+                        )
+                    }}
+                </Mutation>
+
             </div>
         )
     }

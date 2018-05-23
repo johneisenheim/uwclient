@@ -9,13 +9,14 @@ import headerStyle from "assets/jss/material-kit-react/components/headerStyle.js
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.jsx";
-import profileImage from "assets/img/faces/avatar.jpg";
+import profileImage from "assets/img/faces/christian.jpg";
 import { Link } from "react-router-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from "components/CustomButtons/IconButton.jsx";
 import InboxIcon from '@material-ui/icons/Inbox';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import FeedsIcon from '@material-ui/icons/RssFeed';
 import Tooltip from '@material-ui/core/Tooltip';
 import SignoutModal from '../components/signout-modal';
 
@@ -86,6 +87,11 @@ const navbarsStyle = theme => ({
         fill: '#CCCCCC',
         width: 30,
         height: 30
+    },
+    iconOn: {
+        fill: '#ff9800',
+        width: 30,
+        height: 30
     }
 });
 
@@ -109,8 +115,8 @@ class Upbar extends React.Component {
         });
         // this.modal.handleClickOpen();
     }
-    
-    updateModalStatus(modal){
+
+    updateModalStatus(modal) {
         this.setState({
             modal
         })
@@ -118,11 +124,15 @@ class Upbar extends React.Component {
 
     render() {
         const { classes, ...rest } = this.props;
-        console.log(classes.bar)
         return (
             <AppBar position="fixed" className={classes.bar}>
                 <Toolbar>
                     <div style={{ width: '90%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+                        <Tooltip id="tooltip-icon" title="News">
+                            <IconButton color="transparent" className={classes.iconButton} onClick={ () => window.location.href = '/'}>
+                                <FeedsIcon className={window.location.pathname === '/' ? classes.iconOn : classes.icon} />
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip id="tooltip-icon" title="Inbox">
                             <IconButton color="transparent" className={classes.iconButton}>
                                 <InboxIcon className={classes.icon} />
@@ -158,7 +168,7 @@ class Upbar extends React.Component {
                         />
                     </div>
                 </Toolbar>
-                <SignoutModal isModalOpened={this.state.modal} updateModalStatus={this.updateModalStatus}/>
+                <SignoutModal isModalOpened={this.state.modal} updateModalStatus={this.updateModalStatus} />
             </AppBar>
         );
     }

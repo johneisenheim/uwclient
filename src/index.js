@@ -8,7 +8,7 @@ import { HttpLink, createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloLink } from 'apollo-link';
-import { getAuthCookie } from './client/utils/cookies';
+import { getAuthBearer } from './client/utils/cookies';
 
 import "assets/scss/material-kit-react.css";
 
@@ -17,7 +17,7 @@ const httpLink = createHttpLink({ uri: 'http://localhost:2017/graphql' });
 const middlewareLink = new ApolloLink((operation, forward) => {
   operation.setContext({
     headers: {
-      authorization: 'Bearer '+getAuthCookie() || null
+      authorization: getAuthBearer() || null
     }
   });
   return forward(operation)

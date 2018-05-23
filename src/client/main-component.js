@@ -69,7 +69,7 @@ class Components extends React.Component {
                 </div>
             )
         return (
-            <div className={classes.mainComponent}>
+            <div className={classes.mainComponent} style={{overflow: 'hidden'}}>
                 {this.renderComponents()}
             </div>
         );

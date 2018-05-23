@@ -12,17 +12,40 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import SharePost from '../share-post/share-post';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+
+import WallPost from '../wall-post/wall-post';
+import LeftList from '../left-list/left-list';
+import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
-const GET_POST = gql`
-    {
-        getPosts (title:"ciao"){
-            title
-        }
+const GET_ALL_POSTS = gql`
+  {
+    getAllPosts {
+      id
+      content
+      like_number
+      shared_number
+      sent_by
     }
+  }
 `;
+
+const style = theme => ({
+    root: {
+        width: '100vw',
+        height: '100vh',
+        margin: 0,
+        backgroundColor: '#F7F7F7',
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        overflow: 'hidden'
+    },
+})
+
+
 
 class Wall extends React.Component {
     constructor(props) {
@@ -34,24 +57,36 @@ class Wall extends React.Component {
     render() {
         const { classes, ...rest } = this.props;
         return (
-            <React.Fragment>
+            <div className={classes.root}>
                 <Upbar />
-                <GridContainer justify="center" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', width: '100%', height: '100%', marginTop: '85px' }}>
-                    <GridItem xs={12} sm={12} md={8} lg={5}>
-                        <SharePost />
-                        <Query query={GET_POST} >
+                <GridContainer justify="center" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', width: '100%', height: '100%', marginTop: '85px', overflow: 'auto' }}>
+                    <GridItem xs={false} sm={false} md={2} lg={3} style={{ overflowY: 'hidden' }}>
+                        <LeftList />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={8} lg={5} style={{ overflowY: 'scroll' }}>
+                        <SharePost ref={sharePost => this.sharePost = sharePost} />
+                        <Query query={GET_ALL_POSTS}
+                            pollInterval={900}
+                        >
                             {({ loading, error, data }) => {
                                 if (loading) return "Loading...";
                                 if (error) return `Error! ${error.message}`;
-                                console.log('data', data);
+                                const allPosts = data.getAllPosts;
                                 return (
-                                    <p>iiiiii</p>
+                                    <React.Fragment>
+                                        {allPosts.map(post => (
+                                            <WallPost data={post} />
+                                        ))}
+                                    </React.Fragment>
                                 );
                             }}
                         </Query>
                     </GridItem>
+                    <GridItem xs={false} sm={false} md={2} lg={3}>
+                        <LeftList />
+                    </GridItem>
                 </GridContainer>
-            </React.Fragment>
+            </div>
         );
     }
 }
@@ -66,4 +101,4 @@ class Wall extends React.Component {
 //     }
 //   }
 // `)(_Wall);
-export default withStyles(loginPageStyle)(Wall);
+export default withStyles(style)(Wall);

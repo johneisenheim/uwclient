@@ -5,16 +5,7 @@ import FirstRow from './first-row';
 import ShareBottom from './share-bottom';
 import Divider from '@material-ui/core/Divider';
 import cookie from 'react-cookie';
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
 
-const GET_POST = gql`
-    {
-        post {
-            title
-        }
-    }
-`;
 
 const styles = theme => ({
     root: {
@@ -24,7 +15,8 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        marginBottom: 40
     },
     paper: {
         textAlign: 'center',
@@ -46,17 +38,28 @@ const styles = theme => ({
 
 class SimplePost extends Component {
     state = {
-        focused: false
+        focused: false,
+        textAreaValue: undefined
     }
     constructor(props) {
         super(props);
         this.setFocus = this.setFocus.bind(this);
+        this.setTextAreaValue = this.setTextAreaValue.bind(this);
     }
 
-    setFocus(focused){
+    setFocus(focused) {
         this.setState({
             focused
         });
+    }
+
+    setTextAreaValue(textAreaValue){
+        console.log('qui', textAreaValue)
+        this.setState({
+            ...this.state,
+            textAreaValue
+        })
+        // return this.firstRow.getTextAreaValue();
     }
 
     render() {
@@ -64,9 +67,9 @@ class SimplePost extends Component {
         return (
             <div className={classes.root}>
                 <Paper className={this.state.focused ? [classes.paper, classes.paperFocused] : classes.paper}>
-                    <FirstRow setFocus={this.setFocus}/>
+                    <FirstRow setFocus={this.setFocus} setTextAreaValue={this.setTextAreaValue}/>
                     <Divider ligth='true' />
-                    <ShareBottom />
+                    <ShareBottom textAreaValue={this.state.textAreaValue}/>
                 </Paper>
             </div>
         )
