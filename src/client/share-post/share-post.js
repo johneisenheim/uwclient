@@ -6,7 +6,6 @@ import ShareBottom from './share-bottom';
 import Divider from '@material-ui/core/Divider';
 import cookie from 'react-cookie';
 
-
 const styles = theme => ({
     root: {
         width: '100%',

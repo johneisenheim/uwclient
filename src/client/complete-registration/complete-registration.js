@@ -80,7 +80,7 @@ class CompleteRegistration extends React.Component {
             loading: true
         });
         const data = new FormData(event.target);
-        axios.post('http://localhost:2017/rest/verify', data)
+        axios.post('https://uwhiskey-server.herokuapp.com/rest/verify', data)
             .then((response) => {
                 console.log(response);
                 if (response.data) {

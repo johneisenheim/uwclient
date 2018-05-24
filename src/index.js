@@ -13,7 +13,7 @@ import { getAuthBearer } from './client/utils/cookies';
 import "assets/scss/material-kit-react.css";
 
 
-const httpLink = createHttpLink({ uri: 'http://localhost:2017/graphql' });
+const httpLink = createHttpLink({ uri: 'https://uwhiskey-server.herokuapp.com/graphql' });
 const middlewareLink = new ApolloLink((operation, forward) => {
   operation.setContext({
     headers: {

@@ -64,7 +64,7 @@ class SignIn extends React.Component {
             loading: true
         });
         const data = new FormData(event.target);
-        axios.post('http://localhost:2017/rest/login', data)
+        axios.post('https://uwhiskey-server.herokuapp.com/rest/login', data)
             .then((response) => {
                 if (response.data.msg === undefined) {
                     setAuthCookie(response.data.token);

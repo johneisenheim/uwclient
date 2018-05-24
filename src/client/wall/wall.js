@@ -51,7 +51,6 @@ class Wall extends React.Component {
     constructor(props) {
         super(props);
         // we use this to make the card to appear after the page has been rendered
-        console.log('props', props)
     }
 
     render() {
@@ -63,7 +62,7 @@ class Wall extends React.Component {
                     <GridItem xs={false} sm={false} md={2} lg={3} style={{ overflowY: 'hidden' }}>
                         <LeftList />
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={8} lg={5} style={{ overflowY: 'scroll' }}>
+                    <GridItem xs={12} sm={12} md={8} lg={5} style={{ overflowY: 'scroll', minHeight: '100vh' }}>
                         <SharePost ref={sharePost => this.sharePost = sharePost} />
                         <Query query={GET_ALL_POSTS}
                             pollInterval={900}
@@ -91,14 +90,4 @@ class Wall extends React.Component {
     }
 }
 
-
-// const _Wall = withStyles(loginPageStyle)(Wall);
-// export default graphql(gql`
-//   query Post {
-//     todos {
-//       id
-//       text
-//     }
-//   }
-// `)(_Wall);
 export default withStyles(style)(Wall);
