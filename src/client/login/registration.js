@@ -68,7 +68,7 @@ class Register extends React.Component {
             loading: true
         });
         const data = new FormData(event.target);
-        axios.post('http://localhost:2017/rest/register', data)
+        axios.post('https://uwhiskey-server.herokuapp.com/rest/register', data)
             .then((response) => {                
                 if (response.data.msg === undefined) {
                     this.setState({
