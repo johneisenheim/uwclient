@@ -24,9 +24,13 @@ class CompleteRegistrationContainer extends React.Component {
 
     constructor(props) {
         super(props);
-        let a = props.location.search.split('&');
-        this.token = a[0].split('=')[1];
-        this.userType = parseInt(a[1].split('=')[1]);
+        try{
+            let a = props.location.search.split('&');
+            this.token = a[0].split('=')[1];
+            this.userType = parseInt(a[1].split('=')[1]);
+        }catch (e){
+            window.location.href = '/';
+        }
     }
     componentDidMount() {
         // console.log('localstorage', localStorage.getItem('a'), typeof localStorage.getItem('a'));

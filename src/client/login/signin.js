@@ -176,7 +176,7 @@ class SignIn extends React.Component {
                                         {this.state.loading ? <CircularProgress size={24} style={{
                                             color: '#ff9800'
                                         }} /> : null}
-                                        <Button color="primary" simple onClick={() => this.props.changeComponentToShow()}>Sign On</Button>
+                                        <Button color="primary" simple onClick={() => window.location.href = '/register'}>Sign On</Button>
                                     </CardFooter>
                                 </form>
                             </Card>

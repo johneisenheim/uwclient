@@ -20,6 +20,10 @@ import SignIn from './login/signin';
 import Register from './login/registration';
 import Wall from './wall/wall';
 import { isAuthenticated } from './utils/cookies';
+import Upbar from './upbar/upbar';
+import { Router, Route, Switch } from "react-router";
+import Profile from 'client/profile/profile';
+
 
 class Components extends React.Component {
     state = {
@@ -52,11 +56,22 @@ class Components extends React.Component {
 
     renderComponents() {
         if (isAuthenticated()) {
-            return <Wall />
+            return (
+                <React.Fragment>
+                    <Upbar {...this.props} />
+                    <Switch>
+                        <Route exact path='/' render={() => <Wall {...this.props} />} />
+                        <Route exact path='/profile' render={() => <Profile {...this.props} />} />
+                    </Switch>
+                </React.Fragment>
+            )
         } else {
-            if (this.state.isSigninVisible)
-                return <SignIn changeComponentToShow={this.changeComponentToShow} />
-            else return <Register changeComponentToShow={this.changeComponentToShow} />
+            return (
+                <Switch>
+                    <Route exact path='/' render={() => <SignIn {...this.props} />} />
+                    <Route exact path='/register' render={() => <Register {...this.props} />} />
+                </Switch>
+            )
         }
     }
 
@@ -69,7 +84,7 @@ class Components extends React.Component {
                 </div>
             )
         return (
-            <div className={classes.mainComponent} style={{overflow: 'hidden'}}>
+            <div className={classes.mainComponent} style={{ overflow: 'hidden' }}>
                 {this.renderComponents()}
             </div>
         );

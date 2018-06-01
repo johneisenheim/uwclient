@@ -129,7 +129,7 @@ class Upbar extends React.Component {
                 <Toolbar>
                     <div style={{ width: '90%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <Tooltip id="tooltip-icon" title="News">
-                            <IconButton color="transparent" className={classes.iconButton} onClick={ () => window.location.href = '/'}>
+                            <IconButton color="transparent" className={classes.iconButton} onClick={ () => this.props.history.push('/')}>
                                 <FeedsIcon className={window.location.pathname === '/' ? classes.iconOn : classes.icon} />
                             </IconButton>
                         </Tooltip>

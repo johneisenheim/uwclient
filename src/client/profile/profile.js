@@ -31,10 +31,18 @@ import work4 from "assets/img/examples/bottle4.jpg";
 import work5 from "assets/img/examples/bottle5.jpg";
 
 import profilePageStyle from "assets/jss/material-kit-react/views/profilePage.jsx";
-import Upbar from '../upbar/upbar';
 import Button from "components/CustomButtons/Button.jsx";
+import { isAuthenticated } from '../utils/cookies';
 
 class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    if(!isAuthenticated())
+      window.location.href = '/';
+  }
   render() {
     const { classes, ...rest } = this.props;
     const imageClasses = classNames(
@@ -44,7 +52,7 @@ class Profile extends React.Component {
     );
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
     return (
-      <div>
+      <div style={{width: '100%', height: '100%', overflow: 'scroll'}}>
         {/* <Header
           color="transparent"
           brand="Go Back"
@@ -55,9 +63,8 @@ class Profile extends React.Component {
           }}
           {...rest}
         /> */}
-        <Upbar />
         <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
-        <div className={classNames(classes.main, classes.mainRaised)}>
+        <div className={classNames(classes.main, classes.mainRaised)} style={{marginBottom: 20}}>
           <div>
             <div className={classes.container}>
               <GridContainer justify="center">
