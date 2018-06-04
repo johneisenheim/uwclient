@@ -9,6 +9,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloLink } from 'apollo-link';
 import { getAuthBearer } from './client/utils/cookies';
+import Components from "client/main-component.js";
 
 import "assets/scss/material-kit-react.css";
 
@@ -36,12 +37,7 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <Router history={hist}>
       <Switch>
-        {indexRoutes.map((prop, key) => {
-          console.log('route', prop);
-          if (prop.path === '/')
-            return <Route exact path={prop.path} key={key} component={prop.component} />;
-          return <Route path={prop.path} key={key} component={prop.component} />;
-        })}
+        <Route path='/' component={Components} />
       </Switch>
     </Router>
   </ApolloProvider>,

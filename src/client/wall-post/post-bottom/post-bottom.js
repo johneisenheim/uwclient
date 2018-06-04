@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import HeartIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
-import ExpansionPanel, {
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-} from 'material-ui/ExpansionPanel';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Button from '@material-ui/core/Button';
 import Details from './details';
 import AuctionIcon from '@material-ui/icons/Gavel';
+import Avatar from '@material-ui/core/Avatar';
+import UButton from '../../components/ubutton';
+import Textarea from "react-textarea-autosize";
 
 const styles = theme => ({
     root: {
@@ -27,7 +29,7 @@ const styles = theme => ({
         fontSize: 28
     },
     iconOn: {
-        color: '#ffc107',
+        color: '#ff9800',
         fontSize: 28
     },
     divider: {
@@ -53,6 +55,7 @@ const styles = theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        margin: 0
     },
     summary: {
         boxShadow: 'none',
@@ -66,6 +69,55 @@ const styles = theme => ({
     },
     summaryContent: {
         width: 'auto'
+    },
+    commentBoxContainer: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        width: '100%'
+    },
+    textareaContainer: {
+        borderRadius: 15,
+        borderColor: '#F5F5F5',
+        color: '#808080',
+        borderWidth: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        borderStyle: 'solid',
+        padding: 10,
+        width: '100%'
+    },
+    details: {
+        width: '100%'
+    },
+    textarea: {
+        width: '99%',
+        resize: 'none',
+        border: 0,
+        fontFamily: 'Roboto',
+        fontSize: 14,
+        fontWeight: 400,
+        color: '#808080',
+        outline: 'none !important',
+        '&::placeholder': { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: '#BFBFBF',
+            opacity: 1 /* Firefox */
+        },
+        '&:-ms-input-placeholder': { /* Internet Explorer 10-11 */
+            color: '#BFBFBF'
+        },
+        '&::-ms-input-placeholder': { /* Microsoft Edge */
+            color: '#BFBFBF'
+        }
+    },
+    detailsRoot: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'flex-start',
+        flex: 1,
+        flexGrow: 1,
+        justifyContent: 'flex-start'
     }
 });
 
@@ -148,7 +200,23 @@ class PostBottom extends Component {
                             </Button>
                         }
                     </ExpansionPanelSummary>
-                    <Details />
+                    <ExpansionPanelDetails classes={{ root: classes.detailsRoot }}>
+                        <div className={classes.commentBoxContainer}>
+                            <Avatar className={classes.avatar}>AS</Avatar>
+                            <div
+                                className={classes.textareaContainer}
+                            >
+                                <Textarea
+                                    minRows={2}
+                                    className={classes.textarea}
+                                    placeholder={"Write your comment here..."}
+                                    style={{ width: '100%' }}
+                                ></Textarea>
+                            </div>
+                            <UButton label='Comment' />
+                        </div>
+                    </ExpansionPanelDetails>
+                    {/* <Details {...this.props} /> */}
                 </ExpansionPanel>
             </div>
         )

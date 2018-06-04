@@ -222,7 +222,7 @@ class Register extends React.Component {
                                         {this.state.loading ? <CircularProgress size={24} style={{
                                             color: '#ff9800'
                                         }} /> : null}
-                                        <Button color="primary" simple onClick={() => this.props.changeComponentToShow()}>Sign In</Button>
+                                        <Button color="primary" simple onClick={() => window.location.href = '/'}>Sign In</Button>
                                     </CardFooter>
                                 </form>
                             </Card>

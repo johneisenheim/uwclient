@@ -17,6 +17,8 @@ import WallPost from '../wall-post/wall-post';
 import LeftList from '../left-list/left-list';
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const GET_ALL_POSTS = gql`
   {
@@ -41,8 +43,14 @@ const style = theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
+    scrollable: {
+        '::-webkit-scrollbar': {
+            width: '0 !important '
+        },
+        '-ms-overflow-style': 'none'
+    }
 })
 
 
@@ -51,24 +59,32 @@ class Wall extends React.Component {
     constructor(props) {
         super(props);
         // we use this to make the card to appear after the page has been rendered
+        console.log('wall props', props)
     }
 
     render() {
         const { classes, ...rest } = this.props;
         return (
             <div className={classes.root}>
-                <Upbar />
-                <GridContainer justify="center" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', width: '100%', height: '100%', marginTop: '85px', overflow: 'auto' }}>
-                    <GridItem xs={false} sm={false} md={2} lg={3} style={{ overflowY: 'hidden' }}>
+                <GridContainer justify="center" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', width: '100%', height: '100%' }}>
+                    <GridItem xs={false} sm={false} md={2} lg={3} style={{
+                        marginTop: '80px'
+                    }}>
                         <LeftList />
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={8} lg={5} style={{ overflowY: 'scroll', minHeight: '100vh' }}>
+                    <GridItem xs={12} sm={12} md={8} lg={5} className="wall-scrollable-content" style={{
+                        overflow: 'scroll', height: '9000px', marginTop: '80px'
+                    }}>
                         <SharePost ref={sharePost => this.sharePost = sharePost} />
                         <Query query={GET_ALL_POSTS}
                             pollInterval={900}
                         >
                             {({ loading, error, data }) => {
-                                if (loading) return "Loading...";
+                                if (loading) return (
+                                    <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                        <CircularProgress style={{ color: '#ff9800' }} />
+                                    </div>
+                                );
                                 if (error) return `Error! ${error.message}`;
                                 const allPosts = data.getAllPosts;
                                 return (
@@ -81,7 +97,9 @@ class Wall extends React.Component {
                             }}
                         </Query>
                     </GridItem>
-                    <GridItem xs={false} sm={false} md={2} lg={3}>
+                    <GridItem xs={false} sm={false} md={2} lg={3} style={{
+                        marginTop: '80px'
+                    }}>
                         <LeftList />
                     </GridItem>
                 </GridContainer>
